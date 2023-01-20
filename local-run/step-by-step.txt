@@ -1,0 +1,19 @@
+1. To run the compose:
+$ docker-compose up
+
+2. To check status:
+$ docker-compose ps
+          Name                        Command               State           Ports
+-----------------------------------------------------------------------------------
+my-prometheus-grafana_grafana_1   /run.sh                   Up      0.0.0.0:3000->3000/tcp
+my-prometheus-grafana_prometheus_1   /bin/prometheus --config.file ...   Up      0.0.0.0:9090->9090/tcp
+
+3. To check logs:
+$ docker-compose logs -f prometheus
+
+4. To access prometheus web interface:
+$ docker-compose port prometheus 9090
+9090/tcp -> 0.0.0.0:32768
+(access in http://localhost:32768)
+
+P.S: If running in remote machine, Use server IP address instead of localhost

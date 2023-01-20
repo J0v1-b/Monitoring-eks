@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: prometheus
+  name: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.22.2
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/prometheus/
+        - name: data-volume
+          mountPath: /prometheus/
+      volumes:
+      - name: config-volume
+        configMap:
+          defaultMode: 420
+          name: prometheus-config
+      - name: data-volume
+        emptyDir: {}

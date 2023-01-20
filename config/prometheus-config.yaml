@@ -1,0 +1,38 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  serviceAccountName: prometheus-sa
+  serviceMonitorSelector:
+    matchLabels:
+      app: prometheus
+  resources:
+    requests:
+      memory: 400Mi
+  ruleSelector:
+    matchLabels:
+      app: prometheus
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 2000
+    fsGroup: 2000
+  config:
+    alerting:
+      alertmanagers:
+      - static_configs:
+        - targets:
+          - alertmanager:9093
+    rule_files:
+    - /etc/prometheus/rules/alert.rules
+  storage:
+    volumeClaimTemplate:
+      metadata:
+        name: prometheus
+      spec:
+        resources:
+          requests:
+            storage: 1Gi
